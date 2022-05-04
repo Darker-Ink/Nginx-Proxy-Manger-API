@@ -99,15 +99,3 @@ client.connect().then(() => {
 
 ## License
 This project is licensed under the MIT license. See the LICENSE file for details.
-
-
-
-
-
-
-Text
-Text
-
-Text1
-
-Text2
