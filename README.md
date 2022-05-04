@@ -32,16 +32,18 @@ const ProxyManager = require('proxy-manager-api');
 
 const client = new ProxyManager({
     host: 'proxy.example.com',
-    username: 'admin',
+    email: 'admin@example.com',
     password: 'admin'
 });
 
-client.getProxies().then(proxies => {
-    console.log(proxies);
-});
+client.connect().then(() => {
+    client.getProxies().then(proxies => {
+        console.log(proxies);
+    });
 
-client.getProxy('proxied.example.com').then(proxy => {
-    console.log(proxy.ip);
+    client.getProxy('proxied.example.com').then(proxy => {
+        console.log(proxy.ip);
+    });
 });
 ```
 
@@ -51,17 +53,20 @@ const ProxyManager = require('proxy-manager-api');
 
 const client = new ProxyManager({
     host: 'proxy.example.com',
-    username: 'admin',
+    email: 'admin@example.com',
     password: 'admin'
 });
 
-client.createProxy({
-    domain: 'proxied.example.com',
-    ip: '0.0.0.0',
-    port: 8080,
-    ssl: true,
-}).then(proxy => {
-    console.log(proxy);
+client.connect().then(() => {
+    client.proxy.createProxy({
+        domain: 'proxied.example.com',
+        ip: '0.0.0.0',
+        port: 8080,
+        ssl: true,
+    }).then(proxy => {
+        console.log(proxy);
+    })
+
 });
 ```
 
@@ -71,17 +76,19 @@ const ProxyManager = require('proxy-manager-api');
 
 const client = new ProxyManager({
     host: 'proxy.example.com',
-    username: 'admin',
+    email: 'admin@example.com',
     password: 'admin'
 });
 
-client.createProxy({
-    domains: ['proxied.example.com', 'proxied2.example.com'],
-    ip: '0.0.0.0',
-    port: 8080,
-    ssl: true,
-}).then(proxy => {
-    console.log(proxy);
+client.connect().then(() => {
+    client.proxy.createProxy({
+        domains: ['proxied.example.com', 'proxied2.example.com'],
+        ip: '0.0.0.0',
+        port: 8080,
+        ssl: true,
+    }).then(proxy => {
+        console.log(proxy);
+    });
 });
 ```
 
@@ -92,3 +99,15 @@ client.createProxy({
 
 ## License
 This project is licensed under the MIT license. See the LICENSE file for details.
+
+
+
+
+
+
+Text
+Text
+
+Text1
+
+Text2

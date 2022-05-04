@@ -1,34 +1,22 @@
 {
-    "name": "proxy-manager-api",
-    "version": "1.0.0",
-    "description": "Proxy-Manger-API is an API wrapper for https://nginxproxymanager.com/",
-    "main": "lib/index.js",
-    "types": "lib/index.d.ts",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "build": "tsc",
-        "format": "prettier --no-error-on-unmatched-pattern --write \"src/**/*.ts\" \"src/**/*.js\"",
-        "lint": "tslint -p tsconfig.json",
-        "prepare": "npm run build",
-        "prepublishOnly": "npm run lint",
-        "preversion": "npm run lint",
-        "version": "npm run format && git add -A src",
-        "postversion": "git push && git push --tags"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/Darker-Ink/Nginx-Proxy-Manger-API.git"
-    },
-    "author": "DarkerInk",
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/Darker-Ink/Nginx-Proxy-Manger-API/issues"
-    },
-    "homepage": "https://github.com/Darker-Ink/Nginx-Proxy-Manger-API#readme",
-    "devDependencies": {
-        "prettier": "^2.6.2",
-        "tslint": "^6.1.3",
-        "tslint-config-prettier": "^1.18.0",
-        "typescript": "^4.6.4"
-    }
+  "name": "proxy-manager-api",
+  "version": "1.0.3",
+  "description": "Proxy-Manger-API is an API wrapper for https://nginxproxymanager.com/",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Darker-Ink/Nginx-Proxy-Manger-API.git"
+  },
+  "author": "DarkerInk",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Darker-Ink/Nginx-Proxy-Manger-API/issues"
+  },
+  "homepage": "https://github.com/Darker-Ink/Nginx-Proxy-Manger-API#readme",
+  "dependencies": {
+    "axios": "^0.27.2"
+  }
 }
