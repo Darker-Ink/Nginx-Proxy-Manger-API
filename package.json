@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "description": "Proxy-Manger-API is an API wrapper for https://nginxproxymanager.com/",
     "main": "lib/index.js",
-    "types": "lib/index.d.ts", 
+    "types": "lib/index.d.ts",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "build": "tsc",
@@ -12,8 +12,8 @@
         "prepare": "npm run build",
         "prepublishOnly": "npm run lint",
         "preversion": "npm run lint",
-        "version" : "npm run format && git add -A src",
-        "postversion" : "git push && git push --tags"
+        "version": "npm run format && git add -A src",
+        "postversion": "git push && git push --tags"
     },
     "repository": {
         "type": "git",
