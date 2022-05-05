@@ -97,10 +97,37 @@ class Proxy {
                 ssl: proxy.meta.letsencrypt_agree ? true : false,
                 created: proxy.created_on,
                 updated: proxy.modified_on,
-                id: proxy.id
+                id: proxy.id,
+                certificate_id: proxy.certificate_id || null
             }
         })
 
+    }
+
+    /**
+     * Gets all the certificates from the Proxy Server
+     * @returns {Promise<Array>}
+     */
+    async getCertificates() {
+
+        const Certificates = await axios({
+            method: "GET",
+            url: `${this.client.schema}://${this.client.host}/api/certificates`,
+            headers: {
+                "Content-Type": "application/json",
+                'Authorization': `Bearer ${this.client.token}`
+            }
+        })
+
+        return Certificates.data.map(cert => {
+            return {
+                domains: cert.domain_names,
+                id: cert.id,
+                expires: cert.expires,
+                created: cert.created_on,
+                updated: cert.modified_on
+            }
+        })
     }
 
     /**
@@ -156,13 +183,13 @@ class Proxy {
                 port: Proxy.data.forward_port,
                 id: Proxy.data.id,
                 created: Proxy.data.created_on,
-                updated: Proxy.data.modified_on
+                updated: Proxy.data.modified_on,
+                certificate_id: Proxy.data.certificate_id || null
             }
         } catch (e) {
-            const msg = e?.response?.data?.error || e?.message
-            console.log(msg)
+            const msg = e?.response?.data?.error.message || e?.message
             if (msg?.includes("is already in use")) {
-                const domain = msg.message.split(" ")[0]
+                const domain = msg.split(" ")[0]
                 throw new Error(`${domain} is already in use.`)
             }
 
@@ -175,6 +202,45 @@ class Proxy {
 
         }
     }
+
+    /**
+     * UnProxies The Domain
+     * @param {String} domain - The domain to UnProxy
+     * @returns {Promise<String>} 
+     */
+    async unProxy(domain) {
+        if (!domain) throw new Error("No Domain Provided")
+
+        const Proxies = await this.getProxies();
+
+        const Proxy = Proxies.filter(proxy => proxy.domains.includes(domain))[0]
+
+        if (!Proxy) throw new Error("No Proxy Found")
+
+        const ProxyID = Proxy.id
+
+        try {
+             await axios({
+                method: "DELETE",
+                url: `${this.client.schema}://${this.client.host}/api/nginx/proxy-hosts/${ProxyID}`,
+                headers: {
+                    "Content-Type": "application/json",
+                    'Authorization': `Bearer ${this.client.token}`
+                }
+            })
+
+            return "UnProxied Successfully"
+
+        } catch (e) {
+
+            const msg = e?.response?.data?.error || e?.message
+
+            throw new Error(msg)
+        }
+
+    }
+
+
 }
 
 module.exports = Proxy;
