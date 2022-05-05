@@ -37,7 +37,7 @@ class Proxy {
     }
 
     /**
-     * Gets A Proxy from the Proxy Server
+     * Gets a Proxy from the Proxy Server
      * @param {String} Domain - The domain to get the proxy for
      * @returns {Promise<String>}
      * @example
@@ -131,7 +131,7 @@ class Proxy {
     }
 
     /**
-     * Proxies A Domain/Domains
+     * Proxies a Domain/Domains
      * @param {Object} options - The options
      * @param {String|Array} options.domain - The domain(s) to proxy
      * @param {String} options.ip - The IP to proxy to
@@ -204,7 +204,7 @@ class Proxy {
     }
 
     /**
-     * UnProxies The Domain
+     * UnProxies a Domain
      * @param {String} domain - The domain to UnProxy
      * @returns {Promise<String>} 
      */
