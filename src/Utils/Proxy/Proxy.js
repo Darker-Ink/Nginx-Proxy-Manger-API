@@ -112,8 +112,7 @@ class Proxy {
      * @param {Boolean} options.ssl - Whether or not to proxy SSL
      * @returns {Promise<Array>}
      */
-    async proxy(options = {}) {
-
+    async createProxy(options = {}) {
         if (!options.domain) throw new Error("No Domain Provided")
         if (!options.ip) throw new Error("No IP Provided")
         if (!options.port) throw new Error("No Port Provided")
@@ -131,8 +130,9 @@ class Proxy {
                     "domain_names": options.domain,
                     "forward_host": options.ip,
                     "forward_port": options.port,
+                    "forward_scheme": "http",
                     "access_list_id": "0",
-                    "certificate_id": "new",
+                    "certificate_id": options.ssl ? "new" : "0",
                     "meta": {
                         "letsencrypt_agree": options.ssl,
                         "letsencrypt_email": this.client.email,
@@ -146,21 +146,34 @@ class Proxy {
                     "http2_support": false,
                     "hsts_enabled": false,
                     "hsts_subdomains": false,
-                    "ssl_forced": true
+                    "ssl_forced": options.ssl,
                 }
             })
 
             return {
-                domains: Proxy.domain_names,
-                ip: Proxy.forward_host,
-                port: Proxy.forward_port,
+                domains: Proxy.data.domain_names,
+                ip: Proxy.data.forward_host,
+                port: Proxy.data.forward_port,
+                id: Proxy.data.id,
+                created: Proxy.data.created_on,
+                updated: Proxy.data.modified_on
             }
         } catch (e) {
-            if(e.data.error.message.includes("is already in use")) throw new Error("Domain Already Proxied")
-            if(e.data.error.message == "Internal Error") throw new Error("Internal Error (This Usually Means The IP is wrong or Certbot is ratelimited. The Domain has proxied without an SSL)")
-        }
+            const msg = e?.response?.data?.error || e?.message
+            console.log(msg)
+            if (msg?.includes("is already in use")) {
+                const domain = msg.message.split(" ")[0]
+                throw new Error(`${domain} is already in use.`)
+            }
 
-        return Proxy.data
+            if (msg?.message == "Internal Error") {
+                let mm = "Internal Error (This normally means The Domain(s) IP isn't pointing towards the Proxies or Certbot is RateLimited)"
+                throw new Error(mm)
+            } else {
+                throw new Error(msg)
+            }
+
+        }
     }
 }
 

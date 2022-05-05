@@ -82,7 +82,7 @@ const client = new ProxyManager({
 
 client.connect().then(() => {
     client.proxy.createProxy({
-        domains: ['proxied.example.com', 'proxied2.example.com'],
+        domain: ['proxied.example.com', 'proxied2.example.com'],
         ip: '0.0.0.0',
         port: 8080,
         ssl: true,
@@ -95,7 +95,8 @@ client.connect().then(() => {
 ## Links
 - [GitHub](https://github.com/Darker-Ink/Nginx-Proxy-Manger-API)
 - [NPM](https://www.npmjs.com/package/proxy-manager-api)
-- [Documention](https://docs.cattologs.cloud    )
+
+Docs Coming Soon.
 
 ## License
 This project is licensed under the MIT license. See the LICENSE file for details.
