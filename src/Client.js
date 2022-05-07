@@ -1,15 +1,17 @@
 const Collection = require("./Utils/Collection");
-const Proxy = require("./Utils/Proxy/Proxy")
-/**
- * Client Class for making the Proxy Client
- * @constructor
- * @param {Object} options - The options for the client
- * @param {String} options.host - The host of the proxy server
- * @param {String} options.schema - The schema of the proxy server
- * @param {String} options.email - The email for the proxy server
- * @param {String} options.password - The password for the proxy server
- */
+const Proxy = require("./Utils/Proxy/Proxy");
+const { Users } = require("./Utils/Proxy/Users");
+
 class Client {
+    /**
+     * Client Class for making the Proxy Client
+     * @constructor
+     * @param {Object} options - The options for the client
+     * @param {String} options.host - The host of the proxy server
+     * @param {String} options.schema - The schema of the proxy server
+     * @param {String} options.email - The email for the proxy server
+     * @param {String} options.password - The password for the proxy server
+     */
     constructor(options = {}) {
 
         /**
@@ -92,6 +94,12 @@ class Client {
          * @type {Proxy}
          */
         this.proxy = new Proxy(this)
+
+        /**
+         * The Proxy Servers Users
+         * @type {Users}
+         */
+        this.users = new Users(this)
     }
 
 
