@@ -1,5 +1,5 @@
 const { Client } = require("../../Client")
-
+const axios = require("axios");
 class User {
     /**
      * The User Constructor
@@ -143,6 +143,44 @@ class User {
      */
     async setNickname(nickname) {
         console.log("Setting Nickname... " + nickname)
+    }
+
+
+    /**
+     * 
+     * @param {String} password - The new password
+     * @returns {Promise<User>} 
+     * @example await user.setPassword("m3&zPg$F")
+     */
+    async setPassword(password) {
+
+        if (!password) {
+            throw new Error("Password is required")
+        }
+
+        if (!password.length > 7) {
+            throw new Error("Password must be at least 8 characters")
+        }
+
+        try {
+            await axios({
+                method: "PUT",
+                url: `${this.client.schema}://${this.client.host}/api/users/${this.id}/auth`,
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${this.client.token}`
+                },
+                data: {
+                    secret: password,
+                    type: "password"
+                }
+            })
+
+        } catch (e) {
+            console.log(JSON.stringify(e, null, 2))
+        }
+
+        return this
     }
 
 }
