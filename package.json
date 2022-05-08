@@ -1,6 +1,6 @@
 {
   "name": "proxy-manager-api",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Proxy-Manger-API is an API wrapper for https://nginxproxymanager.com/",
   "main": "src/index.js",
   "scripts": {

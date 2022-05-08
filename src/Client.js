@@ -1,5 +1,5 @@
 const Collection = require("./Utils/Collection");
-const Proxy = require("./Utils/Proxy/Proxy");
+const { Proxy } = require("./Utils/Proxy/Proxy");
 const { Users } = require("./Utils/Proxy/Users");
 
 class Client {

@@ -220,7 +220,7 @@ class Proxy {
         const ProxyID = Proxy.id
 
         try {
-             await axios({
+            await axios({
                 method: "DELETE",
                 url: `${this.client.schema}://${this.client.host}/api/nginx/proxy-hosts/${ProxyID}`,
                 headers: {
@@ -243,4 +243,4 @@ class Proxy {
 
 }
 
-module.exports = Proxy;
+module.exports.Proxy = Proxy;

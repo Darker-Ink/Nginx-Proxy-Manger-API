@@ -1,5 +1,5 @@
-const { Client } = require("../../Client")
 const axios = require("axios");
+
 class User {
     /**
      * The User Constructor
@@ -142,7 +142,44 @@ class User {
      * @example await user.setNickname("darkerink")
      */
     async setNickname(nickname) {
-        console.log("Setting Nickname... " + nickname)
+
+        if (!nickname) {
+            throw new Error("Nickname is required")
+        }
+
+        if (!nickname.length > 3) {
+            throw new Error("Nickname must be at least 3 characters")
+        }
+
+        if (nickname === this.nickname) {
+            return this
+        }
+
+        try {
+
+            await axios({
+                method: "PUT",
+                url: `${this.client.schema}://${this.client.host}/api/users/${this.id}`,
+                headers: {
+                    Authorization: `Bearer ${this.client.token}`,
+                    "Content-Type": "application/json"
+                },
+                data: {
+                    nickname
+                }
+            })
+
+            this.nickname = nickname
+
+            return this
+
+        } catch (e) {
+
+            const msg = e?.response?.data?.message || e?.message
+
+            throw new Error(msg)
+        }
+
     }
 
 
@@ -177,12 +214,97 @@ class User {
             })
 
         } catch (e) {
-            console.log(JSON.stringify(e, null, 2))
+            const msg = e?.response?.data?.error || e?.message
+
+            throw new Error(msg)
         }
 
         return this
     }
 
+    /**
+     * Sets the User's Email
+     * @param {String} email - The new email
+     * @returns {Promise<User>}
+     */
+    async setEmail(email) {
+
+        if (!email) {
+            throw new Error("Email is required")
+        }
+
+        if (!email.length > 3) {
+            throw new Error("Email must be at least 3 characters")
+        }
+
+        if (email === this.email) {
+            return this
+        }
+
+        try {
+            await axios({
+
+                method: "PUT",
+                url: `${this.client.schema}://${this.client.host}/api/users/${this.id}`,
+                headers: {
+                    Authorization: `Bearer ${this.client.token}`,
+                    "Content-Type": "application/json"
+                },
+                data: {
+                    email
+                }
+            })
+
+            this.email = email
+
+            return this
+
+        } catch (e) {
+            const msg = e?.response?.data?.message || e?.message
+
+            throw new Error(msg)
+
+        }
+    }
+
+    /**
+     * Sets the User's Name
+     * @param {String} name - The new name
+     * @returns {Promise<User>}
+     * @example await user.setName("Darker Ink")
+     */
+    async setName(name) {
+
+        if (!name) {
+            throw new Error("Name is required")
+        }
+
+        if (!name.length > 3) {
+            throw new Error("Name must be at least 3 characters")
+        }
+
+        if (name === this.name) {
+            return this
+        }
+
+        try {
+            await axios({
+                method: "PUT",
+                url: `${this.client.schema}://${this.client.host}/api/users/${this.id}`,
+                headers: {
+                    Authorization: `Bearer ${this.client.token}`,
+                    "Content-Type": "application/json"
+                },
+                data: {
+                    name
+                }
+            })
+        } catch (e) {
+            const msg = e?.response?.data?.message || e?.message
+
+            throw new Error(msg)
+        }
+    }
 }
 
 module.exports.User = User
