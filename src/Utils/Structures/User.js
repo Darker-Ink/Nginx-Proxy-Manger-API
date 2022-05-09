@@ -147,17 +147,14 @@ class User {
      */
     async setNickname(nickname) {
 
-        if (!nickname) {
-            throw new MissingArgument("Nickname is required")
-        }
+        if (!nickname) throw new MissingArgument("Nickname is required")
+        
 
-        if (!nickname.length > 3) {
-            throw new Error("Nickname must be at least 3 characters")
-        }
+        if (!nickname.length > 3) throw new Error("Nickname must be at least 3 characters")
+        
 
-        if (nickname === this.nickname) {
-            return this
-        }
+        if (nickname === this.nickname) return this
+        
 
         try {
 
@@ -195,13 +192,11 @@ class User {
      */
     async setPassword(password) {
 
-        if (!password) {
-            throw new MissingArgument("Password is required")
-        }
+        if (!password) throw new MissingArgument("Password is required")
+        
 
-        if (!password.length > 7) {
-            throw new Error("Password must be at least 8 characters")
-        }
+        if (!password.length > 7) throw new Error("Password must be at least 8 characters")
+        
 
         try {
             await axios({
@@ -233,17 +228,14 @@ class User {
      */
     async setEmail(email) {
 
-        if (!email) {
-            throw new MissingArgument("Email is required")
-        }
+        if (!email) throw new MissingArgument("Email is required")
+        
 
-        if (!email.length > 3) {
-            throw new MissingArgument("Email must be at least 3 characters")
-        }
+        if (!email.length > 3) throw new MissingArgument("Email must be at least 3 characters")
+        
 
-        if (email === this.email) {
-            return this
-        }
+        if (email === this.email) return this
+        
 
         try {
             await axios({
@@ -279,17 +271,14 @@ class User {
      */
     async setName(name) {
 
-        if (!name) {
-            throw new Error("Name is required")
-        }
+        if (!name) throw new Error("Name is required")
+        
 
-        if (!name.length > 3) {
-            throw new Error("Name must be at least 3 characters")
-        }
+        if (!name.length > 3) throw new Error("Name must be at least 3 characters")
+        
 
-        if (name === this.name) {
-            return this
-        }
+        if (name === this.name) return this
+        
 
         try {
             await axios({

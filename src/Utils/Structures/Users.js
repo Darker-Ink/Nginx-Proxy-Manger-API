@@ -42,14 +42,12 @@ class Users {
 
         if (!data) throw new MissingArgument("You must provide a username, email, or id to search for a user");
 
-
         const users = await this.getUsers();
 
         const user = users.filter(user => user.email === data.toString() || user.id.toString() === data.toString() || user.username === data.toString())[0]
 
-        if (!user) {
-            throw new Error("User not found");
-        }
+        if (!user) throw new Error("User not found");
+
 
         return new User(this.client, user)
     }
@@ -108,9 +106,7 @@ class Users {
 
         await user.setPassword(options.password)
 
-        if (options.permissions) {
-            await user.setPermissions(options.permissions)
-        }
+        if (options.permissions) await user.setPermissions(options.permissions)
 
         return user
     }
