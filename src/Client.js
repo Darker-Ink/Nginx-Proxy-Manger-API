@@ -1,6 +1,7 @@
 const { default: axios } = require("axios");
 const Collection = require("./Utils/Collection");
 const { Proxy } = require("./Utils/Structures/Proxy");
+const { User } = require("./Utils/Structures/User");
 const { Users } = require("./Utils/Structures/Users");
 
 class Client {
@@ -114,11 +115,12 @@ class Client {
 
         const AuthData = await this.proxy.getAuth()
 
-
         this.token = AuthData.token
         this.expires = new Date(AuthData.expires)
         this.connected = true;
-        //this.checkPermission()
+        
+        await this.checkPermission()
+
         setTimeout(async () => {
             await this.getToken()
         }, this.expires - new Date())
@@ -164,7 +166,10 @@ class Client {
             }
         })
 
-        console.log(UserData)
+        if(!UserData.data.roles.includes("admin")) {
+            console.warn(`WARNING: You are using a User that is Not An Admin. This may cause issues. We have removed <Client>.users`)
+            this.users = null
+        }
     }
 
 }
