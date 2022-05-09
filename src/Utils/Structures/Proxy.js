@@ -1,15 +1,16 @@
 const axios = require("axios");
+const { MissingArgument } = require("../Errors/Errors");
 
 class Proxy {
     constructor(client) {
 
         /**
          * The Client
-         * @type {Client}
+         * @type {client}
          * @readonly
          * @private
          * @default null
-         * @returns {Client}
+         * @returns {client}
          */
         this.client = client
     }
@@ -140,11 +141,15 @@ class Proxy {
      * @returns {Promise<Array>}
      */
     async createProxy(options = {}) {
-        if (!options.domain) throw new Error("No Domain Provided")
-        if (!options.ip) throw new Error("No IP Provided")
-        if (!options.port) throw new Error("No Port Provided")
+
+        if (!options.domain) throw new MissingArgument("No Domain Provided")
+
+        if (!options.ip) throw new MissingArgument("No IP Provided")
+
+        if (!options.port) throw new MissingArgument("No Port Provided")
 
         if (typeof options.domain === "string") options.domain = [options.domain]
+        
         try {
             const Proxy = await axios({
                 method: "POST",
@@ -209,7 +214,7 @@ class Proxy {
      * @returns {Promise<String>} 
      */
     async unProxy(domain) {
-        if (!domain) throw new Error("No Domain Provided")
+        if (!domain) throw new MissingArgument("Please provide a domain")
 
         const Proxies = await this.getProxies();
 

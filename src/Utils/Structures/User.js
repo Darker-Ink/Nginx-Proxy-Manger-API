@@ -1,4 +1,5 @@
 const axios = require("axios");
+const { InvalidType, MissingArgument } = require("../Errors/Errors");
 
 class User {
     /**
@@ -21,8 +22,11 @@ class User {
 
         /**
          * The Client
-         * @type {Client}
+         * @type {client}
+         * @readonly
          * @private
+         * @default null
+         * @returns {client}
          */
         this.client = client
 
@@ -144,7 +148,7 @@ class User {
     async setNickname(nickname) {
 
         if (!nickname) {
-            throw new Error("Nickname is required")
+            throw new MissingArgument("Nickname is required")
         }
 
         if (!nickname.length > 3) {
@@ -192,7 +196,7 @@ class User {
     async setPassword(password) {
 
         if (!password) {
-            throw new Error("Password is required")
+            throw new MissingArgument("Password is required")
         }
 
         if (!password.length > 7) {
@@ -230,11 +234,11 @@ class User {
     async setEmail(email) {
 
         if (!email) {
-            throw new Error("Email is required")
+            throw new MissingArgument("Email is required")
         }
 
         if (!email.length > 3) {
-            throw new Error("Email must be at least 3 characters")
+            throw new MissingArgument("Email must be at least 3 characters")
         }
 
         if (email === this.email) {
@@ -299,6 +303,72 @@ class User {
                     name
                 }
             })
+        } catch (e) {
+            const msg = e?.response?.data?.message || e?.message
+
+            throw new Error(msg)
+        }
+    }
+
+    /**
+     * Sets The users permissions
+     * @param {Object} permissions - The new permissions
+     * @param {String} permissions.visibility - The visibility permission
+     * @param {String} permissions.proxy_hosts - The proxy hosts permission
+     * @param {String} permissions.redirection_hosts - The redirection hosts permission
+     * @param {String} permissions.dead_hosts - The dead hosts permission
+     * @param {String} permissions.streams - The streams permission
+     * @param {String} permissions.access_lists - The access lists permission
+     * @param {String} permissions.certificates - The certificates permission
+     * @returns {Promise<User>} 
+     */
+    async setPermissions(permissions) {
+
+        if (!permissions) throw new MissingArgument("At least one permission is required")
+
+        if (permissions.visibility && !["all", "user"].includes(permissions.visibility)) throw new InvalidType(`${permissions?.visibility} is not a valid visibility type (Valid Types: all, user)`)
+
+
+        if (permissions.proxy_hosts && !["manage", "view", "hidden"].includes(permissions.proxy_hosts)) throw new InvalidType(`${permissions?.proxy_hosts} is not a valid proxy hosts type (Valid Types: ${["manage", "view", "hidden"].join(", ")})`)
+
+
+        if (permissions.redirection_hosts && !["manage", "view", "hidden"].includes(permissions.redirection_hosts)) throw new InvalidType(`${permissions?.redirection_hosts} is not a valid redirection hosts type (Valid Types: ${["manage", "view", "hidden"].join(", ")})`)
+
+
+        if (permissions.dead_hosts && !["manage", "view", "hidden"].includes(permissions.dead_hosts)) throw new InvalidType(`${permissions?.dead_hosts} is not a valid dead hosts type (Valid Types: ${["manage", "view", "hidden"].join(", ")})`)
+
+
+        if (permissions.streams && !["manage", "view", "hidden"].includes(permissions.streams)) throw new InvalidType(`${permissions?.streams} is not a valid streams type (Valid Types: ${["manage", "view", "hidden"].join(", ")})`)
+
+
+        if (permissions.access_lists && !["manage", "view", "hidden"].includes(permissions.access_lists)) throw new InvalidType(`${permissions?.access_lists} is not a valid access lists type (Valid Types: ${["manage", "view", "hidden"].join(", ")})`)
+
+
+        if (permissions.certificates && !["manage", "view", "hidden"].includes(permissions.certificates)) throw new InvalidType(`${permissions?.certificates} is not a valid certificates type (Valid Types: ${["manage", "view", "hidden"].join(", ")})`)
+
+
+        try {
+
+            const newPerms = {
+                ...this.permissions,
+                ...permissions
+            }
+
+            await axios({
+                method: "PUT",
+                url: `${this.client.schema}://${this.client.host}/api/users/${this.id}`,
+                headers: {
+                    Authorization: `Bearer ${this.client.token}`,
+                    "Content-Type": "application/json"
+                },
+                data: {
+                    permissions: newPerms
+                }
+            })
+
+            this.permissions = newPerms
+
+            return this
         } catch (e) {
             const msg = e?.response?.data?.message || e?.message
 

@@ -12,7 +12,9 @@
 </div>
 
 ## Info
-Proxy-Manager-API is a simple API for managing Nginx Proxies Using https://nginxproxymanager.com.
+Proxy-Manager-API is a simple API for managing Nginx Proxies Using https://nginxproxymanager.com. 
+
+We Are Trying to Cover 100% of the API from Nginx Proxy Manager. If you want to help Just Fork and make a Pull Request With the new Functions!
 
 
 
@@ -30,7 +32,7 @@ Login and Get all proxies. Then get the info of a certain domain proxied
 ```javascript
 const ProxyManager = require('proxy-manager-api');
 
-const client = new ProxyManager({
+const client = new ProxyManager.Client({
     host: 'proxy.example.com',
     email: 'admin@example.com',
     password: 'admin'
@@ -51,7 +53,7 @@ If you want to proxy a new domain you can do it like this:
 ```javascript
 const ProxyManager = require('proxy-manager-api');
 
-const client = new ProxyManager({
+const client = new ProxyManager.Client({
     host: 'proxy.example.com',
     email: 'admin@example.com',
     password: 'admin'
@@ -70,25 +72,21 @@ client.connect().then(() => {
 });
 ```
 
-If you want to proxy multiple domains to one ip and port you can do it like this:
+If you want to Unproxy a domain you can do it like this:
 ```javascript
+
 const ProxyManager = require('proxy-manager-api');
 
-const client = new ProxyManager({
+const client = new ProxyManager.Client({
     host: 'proxy.example.com',
     email: 'admin@example.com',
     password: 'admin'
 });
 
 client.connect().then(() => {
-    client.proxy.createProxy({
-        domain: ['proxied.example.com', 'proxied2.example.com'],
-        ip: '0.0.0.0',
-        port: 8080,
-        ssl: true,
-    }).then(proxy => {
+    client.proxy.unProxy("proxied.example.com").then(proxy => {
         console.log(proxy);
-    });
+    })
 });
 ```
 

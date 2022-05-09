@@ -74,9 +74,6 @@ class Collection extends Map {
 	* Finds a value from a property.
 	* @param {String} property - The property to search in.
 	* @param {String} value - The value to find.
-	* @example
-	* client.guilds.find("name", "CodeGrok");
-	* // find a server by name CodeGrok.
 	*/
 	find(property, value) {
 		for(const x of this.values()) {

@@ -1,6 +1,7 @@
+const { default: axios } = require("axios");
 const Collection = require("./Utils/Collection");
-const { Proxy } = require("./Utils/Proxy/Proxy");
-const { Users } = require("./Utils/Proxy/Users");
+const { Proxy } = require("./Utils/Structures/Proxy");
+const { Users } = require("./Utils/Structures/Users");
 
 class Client {
     /**
@@ -62,11 +63,11 @@ class Client {
          */
         this.password = options.password
 
-        /**
-         * The Proxies
-         * @type {Collection}
-         */
-        this.proxies = new Collection()
+        // /**
+        //  * The Proxies
+        //  * @type {Collection}
+        //  */
+        // this.proxies = new Collection() Removed As of now
 
         /**
          * When the AuthToken expires
@@ -117,7 +118,7 @@ class Client {
         this.token = AuthData.token
         this.expires = new Date(AuthData.expires)
         this.connected = true;
-
+        //this.checkPermission()
         setTimeout(async () => {
             await this.getToken()
         }, this.expires - new Date())
@@ -145,6 +146,25 @@ class Client {
         }
 
         return this.token;
+    }
+
+    /**
+     * Permission Check
+     * @private
+     * @returns void
+     */
+    async checkPermission() {
+        if (!this.connected) throw new Error("Client is not connected");
+
+        const UserData = await axios({
+            method: "GET",
+            url: `${this.schema}://${this.host}/api/users/me?expand=permissions`,
+            headers: {
+                Authorization: `Bearer ${this.token}`
+            }
+        })
+
+        console.log(UserData)
     }
 
 }
