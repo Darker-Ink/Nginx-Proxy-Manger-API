@@ -30,7 +30,7 @@ Login and Get all proxies. Then get the info of a certain domain proxied
 ```javascript
 const ProxyManager = require('proxy-manager-api');
 
-const client = new ProxyManager({
+const client = new ProxyManager.Client({
     host: 'proxy.example.com',
     email: 'admin@example.com',
     password: 'admin'
@@ -51,7 +51,7 @@ If you want to proxy a new domain you can do it like this:
 ```javascript
 const ProxyManager = require('proxy-manager-api');
 
-const client = new ProxyManager({
+const client = new ProxyManager.Client({
     host: 'proxy.example.com',
     email: 'admin@example.com',
     password: 'admin'
@@ -74,7 +74,7 @@ If you want to proxy multiple domains to one ip and port you can do it like this
 ```javascript
 const ProxyManager = require('proxy-manager-api');
 
-const client = new ProxyManager({
+const client = new ProxyManager.Client({
     host: 'proxy.example.com',
     email: 'admin@example.com',
     password: 'admin'
